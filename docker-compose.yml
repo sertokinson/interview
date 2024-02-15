@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: library/postgres:14.8
+    hostname: localhost
+    restart: always
+    environment:
+      POSTGRES_DB: interview
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  interview-service:
+    build: ./
+    environment:
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: "DEBUG"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/interview?currentSchema=interview_schema"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECTURI: "https://www.justskills.fun/api/login/oauth2/code/google"
+    ports:
+      - "8080:8080"

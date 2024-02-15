@@ -1,26 +1,31 @@
 package ru.interview.platform.domain.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.OffsetDateTime;
 
-@ToString
-@Setter
+@Data
 @Entity
 public class Interview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @NotNull(message = "Денчик")
+    @NotNull
     String header;
 
     @NotNull
@@ -32,10 +37,18 @@ public class Interview {
     @NotNull
     String level;
 
+    @ManyToOne
+    @JoinColumn(name = "employer_id", updatable = false)
+    Employer employer;
+
+    @NotNull
+    String status;
+
     String resumeFile;
     String reviewFile;
 
     @CreationTimestamp
+    @Column(updatable = false)
     OffsetDateTime createDateTime;
 
     @UpdateTimestamp

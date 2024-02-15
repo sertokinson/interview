@@ -1,17 +1,36 @@
 server:
-  port : 8080
+  port: 8080
 
 spring:
-  schema: cot_calc
+  sql:
+    init:
+      mode: always
+  schema: interview_schema
   datasource:
-    url: jdbc:postgresql://localhost:5432/main?currentSchema=${spring.schema}
+    url: jdbc:postgresql://localhost:5432/interview?currentSchema=${spring.schema}
     username: postgres
     password: postgres
     driverClassName: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            client-id: 760823768694-rngo608aseijv4725hd539le5v5ofdu3.apps.googleusercontent.com
+            client-secret: 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
+        provider:
+          google:
+           authorization-uri: https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount
 
-logging.level.root: INFO
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        security: DEBUG
